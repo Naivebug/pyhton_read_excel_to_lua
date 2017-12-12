@@ -3,7 +3,7 @@ easy python read xml to lua data export to file
 
 #create by NaiveBug^梁疯
 
-为了方便大家,特意开源一个Excel导表工具.以免在大家重复造轮子
+为了方便大家,特意开源一个Excel导表工具.
 
 ------------
 #1先先安装Python2.7~please install python2.7
@@ -51,6 +51,8 @@ PubMakeMoreFile:输出多文件模式
 PS**Excel文件里的字段可随时剪切掉换位置而不需要通知程序,但是如果删除了或增加就需要通知程序对应去添加.
 
 PS**我知道市面上挺多导表是直接自动导,不需要加Python文件,但是如果自己加个Python文件写的会能支持更加强大的功能.具体还有功能以后我有空在添加上来..具体有需要也可以轻松支持自动不需要添加Pyhton文件,而是把配置搞到导表去,但这个有需求就自己来弄
+
+有何建议可以在里面评论或到Skynet群里@clear,云风大哥能力大做大贡献,我能力弱就做小贡献...
 
 
 
