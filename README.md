@@ -6,7 +6,7 @@ easy python read xml to lua data export to file
 为了方便大家,特意开源一个Excel导表工具.
 
 --------------
-*注意*
+**注意**
 最近修改支持一下Python3.0的..Python3.0的更方便安装
 xlrd新版已不支持xlsx的Excel文件 , 只支持xls了, 所以如果需要xlsx的支持, 需要安装旧版的xlrd
 
