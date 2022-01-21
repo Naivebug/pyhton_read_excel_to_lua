@@ -13,6 +13,9 @@ easy python read xml to lua data export to file
 #3点击script下build编译并导出excel表文件到excel/script目录下.
 
 ------------
+注意:xlrd新版已不支持xlsx的Excel文件 , 只支持xls了, 所以如果需要xlsx的支持, 需要百度下安装旧版的xlrd
+
+------------
 **报错提示**
 
 当导表Excel表配置错误时,并会有报错提示..提示哪个导表,哪行哪个字段会有问题,原因是什么
