@@ -4,6 +4,14 @@
 '''
 import makescript 
 
+def StartAuto(ReadPath,PathOut,types):
+    print ( "int:",ReadPath,PathOut)
+    makescript.SetPath(ReadPath,PathOut)
+    makescript.SetTypes( types)
+    ##---
+    import makescript_auto
+    makescript_auto.Auto();
+
 def GBK2UTF8(s):
     #print("s",s)
     #s = s.decode('utf-8').encode('gb2312')

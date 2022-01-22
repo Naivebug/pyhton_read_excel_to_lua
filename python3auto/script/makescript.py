@@ -2,6 +2,7 @@
 '''
 #create by NaiveBug^梁疯
 '''
+from operator import truediv
 import xlrd
 import os
 import slpp
@@ -10,6 +11,31 @@ keyline = 0; #关键字行放在第一行
 g_encode = "utf-8";
 g_ReadPath = ""
 g_PathOut = ""
+g_types = {}
+g_bLua  = True
+
+def is_num_by_except(num):
+    try:
+        int(num)
+        return True
+    except ValueError:
+        return False
+
+def SetKeysStr(keys,tems,string):
+    # if keys in string: 
+    #      strline = "\n \'%s\':{" % tems; 
+    # else:
+    #     strline = "\n%d:{" % int(tems);
+    if keys in string:
+        if is_num_by_except(tems) :
+            return "\n%d:{" % int(tems); 
+        else:
+            return "\n\"%s\":{" % tems; 
+    else:
+        return "\n%d:{" % int(tems); 
+
+def SetTypes(types):
+    g_types = types
 
 def SetPath(ReadPath, PathOut):  # 设置读和写的路径
     global g_ReadPath,g_PathOut
@@ -32,8 +58,8 @@ def TestPrint(*msg):
 
 # 编码 字符
 def GetEncodeStr(temstr):
-    if isinstance(temstr,unicode):
-        temstr = temstr.encode(g_encode)
+    #if isinstance(temstr,unicode):
+    #    temstr = temstr.encode(g_encode)
     return temstr
 
 # 译码,解码
@@ -131,9 +157,9 @@ def ReadMoreFile(fname,sheetName,title,noReadRow = 2):
     return data
 
 
-def Change2LuaData(data,title,dataName):#专门转换Map开头的函数的数据
+def Change2LuaData(data,title,dataName,newlinekeys):#专门转换Map开头的函数的数据
     exec( data);
-    data = slpp.SLPP().encode(eval(dataName));
+    data = slpp.SLPP().encode(eval(dataName),newlinekeys);
     data = "\n--%s\n" % (str(title)) + "return "  + data + "\n" #+ ChangeTitleData2Class(dataName,title) 
     LuaMakeRequirHead(dataName);
     return data;
@@ -452,12 +478,16 @@ def ReadTitle2Dict(fname, sheetName, title, string, tuples,floats, dataName, noR
                 strline += temkey;
                 if keys == keyid:
                     try:
-                        strline = "\n%d:{" % int(tems); 
+                        strline = SetKeysStr(keys,tems,string)  #这种方法是强制识别
+                        # if keys in string: 
+                        #      strline = "\n \'%s\':{" % tems; 
+                        # else:
+                        #     strline = "\n%d:{" % int(tems);
                     except:
                         TestPrint( "%d行的数据异常\n" % (i + 1))
                         raise
                 elif keys in string:
-                    strline += "\'" + str(tems) + '\','
+                    strline += "\'" + str(tems) + '\',' 
                 elif keys in tuples:
                     tems = GetEvalStr(tems);
                     strline += tems + ','
@@ -526,7 +556,8 @@ def ReadTitleDictList(fname, sheetName, title, string, tuples,floats, dataName, 
                         bAddSub = False;
                         strline += ']},';
                     try:
-                        strline += "\n%d:{" % int(tems); 
+                        #strline += "\n%d:{" % int(tems); 
+                        strline += SetKeysStr(keys,tems,string)
                     except:
                         TestPrint( "%d行的数据异常\n" % (i + 1))
                         raise
@@ -590,7 +621,8 @@ def ReadTitleDictDictDict(fname, sheetName, title, string, tuples,floats, dataNa
                                     strline += (g_nCen - ncen) * "\n}},"
                                 g_nCen = ncen
                                 
-                                strline += "\n%d:{" % int(tems); 
+                                #strline += "\n%d:{" % int(tems); 
+                                strline += SetKeysStr(keys,tems,string)
                             except:
                                 TestPrint( "%d行的数据异常\n" % (i + 1))
                                 raise

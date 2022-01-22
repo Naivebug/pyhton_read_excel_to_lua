@@ -1,3 +1,4 @@
+from math import fabs
 import re
 
 class SLPP:
@@ -20,12 +21,13 @@ class SLPP:
         if not result: return
         return result;
 
-    def encode(self, obj):
+    def encode(self, obj,newlinekeys):
         if not obj: return
         self.depth = 0
-        return self.__encode(obj)
+        self.newlinekeys = newlinekeys
+        return self.__encode(obj,0,"+")
 
-    def __encode(self, obj):
+    def __encode(self, obj,depth,parentkey):
         s = ''
 #        tab = '\t'
 #        newline = '\n'
@@ -33,6 +35,7 @@ class SLPP:
         newline = ''
         mynewline = '\n'
         tp = type(obj).__name__
+        #print("---tp",tp,depth,parentkey,obj)
         if tp == 'str':
             s += '[['+obj+']]'
         elif tp == 'int' or tp == 'float' or tp == 'long' or tp == 'complex':
@@ -40,26 +43,46 @@ class SLPP:
         elif tp == 'bool':
             s += str(obj).lower()
         elif tp == 'list' or tp == 'tuple':
-            s += "{" + newline
-            self.depth += 1
+            #print("---list",tp,depth,parentkey,obj)
+            mynewline = ''
+            if parentkey in self.newlinekeys:
+                mynewline = '\n'
+                tab = "     "
+            s += "{" + mynewline
+            depth += 1
             for el in obj:
-                s += tab * self.depth + self.__encode(el) + ',' + newline
-            self.depth -= 1
-            s += tab * self.depth + "}"
+                s += tab * depth + self.__encode(el,depth,"") + ',' + mynewline
+            depth -= 1
+            s += tab * depth + "}"
         elif tp == 'dict':
-            s += "{" + newline
-            self.depth += 1
+            s += "{" 
+            depth += 1
+            bone = True
+            #print("--obj",obj)
             for key in obj:
                 #TODO: lua cannot into number keys. Add check.
-                if type(key).__name__ == 'int':
+                #print("---key",depth,key, type(key).__name__)
+                tab = ""
+                mynewline = ''
+                if type(key).__name__ == 'int'  :
                     mynewline = ''
-                    if self.depth == 1:
+                    if  depth == 1 or parentkey in self.newlinekeys:
                         mynewline = "\n"
-                    s += mynewline + tab * self.depth + '[' + str(key) + ']' + ' = ' + self.__encode(obj[key]) + ',' + newline
+                        tab = "     "
+                    bone = False
+                    s += mynewline + tab * depth + '[' + str(key) + ']' + ' = ' + self.__encode(obj[key],depth,str(key)) + ','  
+                elif  type(key).__name__ == 'str':
+                    mynewline = ''
+                    if depth == 1  or parentkey in self.newlinekeys:
+                        mynewline = "\n"
+                        tab = "     "
+                    bone = False
+                    s += mynewline + tab * depth +  str(key)  + ' = ' + self.__encode(obj[key],depth,str(key)) + ','  
                 else:
-                    s += tab * self.depth + key + ' = ' + self.__encode(obj[key]) + ',' + newline
-            self.depth -= 1
-            s += tab * self.depth + "}"
+                    s += tab * depth + key + ' = ' + self.__encode(obj[key],depth,str(key)) + ','  
+                bone = False
+            depth -= 1
+            s += tab  + "}"
         return s
 
 

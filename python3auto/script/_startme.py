@@ -8,8 +8,9 @@ import init
 ReadPath = "./../excel/";# 读取你的Excel表的路径,
 PathOut = "./../excel/script/" #你导出的Excel表的路径,可直接导到你工程的目录
 
-
-init.Start(ReadPath,PathOut)
+types = {"type":"lua","module":False} #配置导出类型,
+init.StartAuto(ReadPath,PathOut,types)
+#init.Start(ReadPath,PathOut)
 
 
 

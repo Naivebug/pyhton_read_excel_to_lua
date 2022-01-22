@@ -9,10 +9,13 @@ easy python read xml to lua data export to file
 **注意**
 
 最近修改支持一下Python3.0的..Python3.0的更方便安装
-xlrd新版已不支持xlsx的Excel文件 , 只支持xls了, 所以如果需要xlsx的支持, 需要安装旧版的xlrd
+xlrd新版已不支持xlsx的Excel文件 , 只支持xls了, 所以如果需要xlsx的支持, 需要安装旧版的xlrd, 具体百度了解
 
+python3auto : 自动导出所有的xls的相关规则的文件
+python3:手动写脚本
+python27:旧版本
 ------------
-#1先先安装Python2.7~please install python2.7
+#1先先安装Python2.7~please install python2.7   或Python3
 
 #2python install xlrd (这步百度搜索自己解决)
 
