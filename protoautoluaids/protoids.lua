@@ -1,0 +1,26 @@
+return {
+     ['name'] = {
+          ['Protocol.C2SLogin'] = 101,
+          ['Protocol.S2CHello'] = 102,
+          ['Protocol.S2CLoginSucc'] = 103,
+          ['cs.Person'] = 104,
+          ['cs.PhoneNumber'] = 105,
+          ['cs.AddressBook'] = 106,
+          ['Protocol.C2SChangePetN'] = 107,
+          ['Protocol.S2CPetDataAdd'] = 108,
+          ['Protocol.S2COnePet'] = 109,
+          ['Protocol.S2CAddPet'] = 110,
+          ['Protocol.S2CMorePet'] = 111,     },
+     ['idnames'] = {
+          [101] = [[Protocol.C2SLogin]],
+          [102] = [[Protocol.S2CHello]],
+          [103] = [[Protocol.S2CLoginSucc]],
+          [104] = [[cs.Person]],
+          [105] = [[cs.PhoneNumber]],
+          [106] = [[cs.AddressBook]],
+          [107] = [[Protocol.C2SChangePetN]],
+          [108] = [[Protocol.S2CPetDataAdd]],
+          [109] = [[Protocol.S2COnePet]],
+          [110] = [[Protocol.S2CAddPet]],
+          [111] = [[Protocol.S2CMorePet]],     },     
+}
