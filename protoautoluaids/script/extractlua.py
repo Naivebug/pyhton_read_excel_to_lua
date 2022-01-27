@@ -9,8 +9,8 @@ import json
 
 
 def main(dir):
-	startbaseid = 101;
-	startid = 100;
+	startbaseid = 256+1;
+	startid = 256;
 	maxid = 65535;
 	dc = {}
 	dcids = {}
@@ -44,9 +44,12 @@ def main(dir):
 			if len(ls) > 0 :
 				protoname = ls[0][1].strip() + "."
 			ls = re_message.findall(buf)
-			
+			#
 			for s in ls :
-				s2 = protoname + s.strip("message").strip()
+				name = s.replace("message", "").strip()
+				if not name[0:3] in ["C2S","S2C","c2s","s2c"] :
+					continue
+				s2 = protoname + name # s.strip("message").strip() 
 				if s2 in dc:
 					newdc[s2] = dc[s2]
 					newids[dc[s2]] = s2
@@ -77,6 +80,39 @@ def main(dir):
 		f = open("protoids.lua", "w")
 		f.write(tem)
 		f.close()
+		#out cs
+		printCs(newdc)
+
+def printCs(newdc):
+	txt = """
+using Google.Protobuf;
+using System.Collections.Generic;
+namespace protos
+{
+	class protoids
+	{
+		delegate object Fn(byte[] data);
+	"""
+	txtend = "\t}\n}"
+	#add idnames
+	body = "\tstatic Dictionary<int, string> idnames = new Dictionary<int, string>(){\n"
+	body2 = "	\tstatic Dictionary<string,int> nameids = new Dictionary<string, int>(){\n"
+	body3 = "	\tstatic Dictionary<int, Fn> ids = new Dictionary<int, Fn>(){\n"
+	for name,id in newdc.items() : 
+		body += "\t\t\t[%d] = \"%s\",\n"%(id,name)
+		body2 += "\t\t\t[\"%s\"] = %d,\n"%(name,id)
+		body3 += "\t\t\t[%d] = %s.Parser.ParseFrom,\n"%(id,name)
+	#add nameids
+	body += "\t\t};\n"
+	body2 += "\t\t};\n"
+	body3 +="\t\t};\n"
+	text = txt + body + body2 + body3 + txtend
+	f = open("protoidscs.cs", "w")
+	f.write(text)
+	f.close()
+	
+	
+
 
 if __name__ == "__main__":
 	dir = "./" if len(sys.argv)<=1  else sys.argv[1]
