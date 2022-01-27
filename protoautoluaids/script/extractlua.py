@@ -91,13 +91,13 @@ namespace protos
 {
 	class protoids
 	{
-		delegate object Fn(byte[] data);
+		public delegate object Fn(byte[] data);
 	"""
 	txtend = "\t}\n}"
 	#add idnames
-	body = "\tstatic Dictionary<int, string> idnames = new Dictionary<int, string>(){\n"
-	body2 = "	\tstatic Dictionary<string,int> nameids = new Dictionary<string, int>(){\n"
-	body3 = "	\tstatic Dictionary<int, Fn> ids = new Dictionary<int, Fn>(){\n"
+	body = "\tpublic static Dictionary<int, string> idnames = new Dictionary<int, string>(){\n"
+	body2 = "	\tpublic static Dictionary<string,int> nameids = new Dictionary<string, int>(){\n"
+	body3 = "	\tpublic static Dictionary<int, Fn> ids = new Dictionary<int, Fn>(){\n"
 	for name,id in newdc.items() : 
 		body += "\t\t\t[%d] = \"%s\",\n"%(id,name)
 		body2 += "\t\t\t[\"%s\"] = %d,\n"%(name,id)
